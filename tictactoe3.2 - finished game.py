@@ -13,47 +13,38 @@ def index_finder(a, b):
     if a == 3:
         return int(b) + 5
 
-def legal():
-    if move.split()[0] not in numbers or move.split()[2] not in numbers:
-        print("You should enter numbers!")
-        return False
-    elif move.split()[0] not in list("123") or move.split()[2] not in list("123"):
-        print("Coordinates should be from 1 to 3!")
-        return False
-    elif x[index_finder(move.split()[0]), index_finder(move.split()[2])] != ' ':
-        print("This cell is occupied! Choose another one!")
-        return False
-    else:
-        return True
-
 def victory():
     for n in range(3):
-        if x[n] == x[n + 3] == x[n + 6] and x != " ":
+        if x[n] == x[n + 3] == x[n + 6] and x[n] in list("XO"):
             return True
     for n in range(0, 7, 3):
-        if x[n] == x[n + 1] == x[n + 2] and x != " ":
+        if x[n] == x[n + 1] == x[n + 2] and x[n] in list("XO"):
             return True
     for n in range(2, 5, 2):
-        if x[4 - n] == x[4] == x[4 + n] and x != " ":
+        if x[4 - n] == x[4] == x[4 + n] and x[n] in list("XO"):
             return True
     return False
 
 numbers = list("1234567890")
 x = list('         ')
 turn = True
-legal = False
 
 print_board()
-
 while True:
     while True:
         move = input("Enter the coordinates: ")
-        if legal():
+        if move.split()[0] not in numbers or move.split()[1] not in numbers:
+            print("You should enter numbers!")
+        elif move.split()[0] not in list("123") or move.split()[1] not in list("123"):
+            print("Coordinates should be from 1 to 3!")
+        elif x[index_finder(int(move.split()[0]), int(move.split()[1]))] in list("XO"):
+            print("This cell is occupied! Choose another one!")
+        else:
             break
     if turn == True:
-        x[index_finder(move.split()[0]), index_finder(move.split()[2])] = "X"
+        x[index_finder(int(move.split()[0]), int(move.split()[1]))] = "X"
     else:
-        x[index_finder(move.split()[0]), index_finder(move.split()[2])] = "O"
+        x[index_finder(int(move.split()[0]), int(move.split()[1]))] = "O"
     print_board()
     if victory():
         if turn == True:
@@ -61,6 +52,7 @@ while True:
         else:
             print("O wins")
         break
+    if not victory() and " " not in x:
+        print("Draw")
+        break
     turn = not turn
-        
-        
